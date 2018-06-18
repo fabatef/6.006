@@ -1,0 +1,156 @@
+%
+% 6.006 problem set 1 solutions template
+%
+\documentclass[12pt,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+
+\input{macros}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\theproblemsetnum}{4}
+\newcommand{\releasedate}{April 6, 2017}
+\newcommand{\duedate}{April 25, 2017}
+\newcommand{\tabUnit}{3ex}
+\newcommand{\tabT}{\hspace*{\tabUnit}}
+
+\title{6.006 Problem Set 4}
+
+\begin{document}
+
+\handout{Problem Set \theproblemsetnum}{\releasedate} %{April 6, 2017}
+
+\textbf{All parts are due {\bf \duedate} at {\bf 11:59PM}}.
+
+\setlength{\parindent}{0pt}
+
+\medskip
+
+\hrulefill
+
+\medskip
+
+{\bf Name:} Faaya Abate Fulas
+
+\medskip
+
+{\bf Collaborators:} Ebenezer Nkwate 
+
+\medskip
+
+\hrulefill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% See below for common and useful latex constructs. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some useful commands:
+%$f(x) = \Theta(x)$
+%$T(x, y) \leq \log(x) + 2^y + \binom{2n}{n}$
+% {\tt code\_function}
+
+
+% You can create unnumbered lists as follows:
+%\begin{itemize}
+%    \item First item in a list 
+%        \begin{itemize}
+%            \item First item in a list 
+%                \begin{itemize}
+%                    \item First item in a list 
+%                    \item Second item in a list 
+%                \end{itemize}
+%            \item Second item in a list 
+%        \end{itemize}
+%    \item Second item in a list 
+%\end{itemize}
+
+% You can create numbered lists as follows:
+%\begin{enumerate}
+%    \item First item in a list 
+%    \item Second item in a list 
+%    \item Third item in a list
+%\end{enumerate}
+
+% You can write aligned equations as follows:
+%\begin{align} 
+%    \begin{split}
+%        (x+y)^3 &= (x+y)^2(x+y) \\
+%                &= (x^2+2xy+y^2)(x+y) \\
+%                &= (x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3) \\
+%                &= x^3+3x^2y+3xy^2+y^3
+%    \end{split}                                 
+%\end{align}
+
+% You can create grids/matrices as follows:
+%\begin{align}
+%    A = 
+%    \begin{bmatrix}
+%        A_{11} & A_{21} \\
+%        A_{21} & A_{22}
+%    \end{bmatrix}
+%\end{align}
+
+\begin{problems}
+
+\section*{Part A}
+
+\problem  % Problem 1
+
+\begin{itemize}
+	\item[-] Topologically sort the DAG.
+	\item [-] Assign each edge in the DAG a weight of -1 and run the Bellman-Ford algorithm where the relaxations are performed according to the topologically sorted ordering of the nodes to find the longest path between all pairs of nodes in $\O (V +E)$ time. Since a uniform weight of -1 is applied to all the edges in the graph, the longest path between two nodes must also traverse the most number of nodes.
+	\item[-] Insert an edge between the two furthest nodes in the graph. The edge will be directed from the right most node to the left most node in the topologically sorted order. This will form a cycle containing the most number of nodes maximizing the size of the largest SCC in the graph
+\end{itemize}
+
+\problem  
+
+\begin{itemize}
+	\item[-] Make T copies of all the nodes in G for all the possible times at which Judy arrives at the nodes, $u_0, u_1, ..u_{T-1}$\\
+	
+	For some node $u_i$, 
+	
+	\item[-]If $i > r_u$, the cost of an edge from $u_i$ to its neighbor, $v_j$ , is $d_iw_i$. In this case, she arrives at the next node $v_j$ at time, $i+w_i$ where the traffic light timer is in state $(i+w_i) mod T$. Therefore, draw an edge with weight $d_iw_i$  from $u_i$ to $v_j$ where $j=(i+w_i) mod T$ 
+	
+	\item [-]Else, the cost of the edge from $u_i$ to its neighbor,$v_j$,  is $s_u(r_u-i) + d_iw_i$. In this case, she arrives at the next node $v_j$ at time, $(r_u-i)+i+w_i$ where the traffic light timer is in state $((r_u-i)+i+w_i) mod T$. Therefore, draw an edge from $u_i$ to $v_j$ with weight $s_u(r_u-i) + d_iw_i$ where $j=((r_u-i)+i+w_i) mod T$ 
+	\item[-] For all the possible states of destination node, $t_i$, draw an edge to a single destination node, $t'$, with an edge weight of 0.
+	
+	\item[-] The new graph, G', will have $nT + 1$ nodes and $(m+1)T$ edges. Run Dijkstra on G' from $s_0$ to $t'$  in $O(mT +nTl\log(nT))$. The resulting path will use the minimum amount of fuel to get from s to t.
+\end{itemize}
+\problem % Problem 3
+
+\begin{problemparts}
+\problempart 
+\begin{itemize}
+	\item[-] Modify the Floyd-Warshall algorithm by keeping track of the maximum probability of failure encountered when traversing an edge in the graph so far. The path through the $k+1^{th}$ node is taken if the edge with the maximum probability of failure in the path containing node $k+1$ has a smaller probability of failure than the $p_i$ of the edge with the maximum probability of failure in the current path.
+	\item[-] Since this is just a modified Floyd-Warshall, it will run in $O(n^3)$
+\end{itemize}
+\problempart 
+\begin{itemize}
+	\item[-] The probability of failure for a path between $u$ and $v$ is the product of the probability of failure of the edges in the path since the probabilities are independent. The $\log(1-p_i)$ sum of the probabilities of the edges is equal to the $\log$ of the total probability of success for the path. Since $1-p_i< 0$, for $1-p_i > 1-p_j$, $\log(1-p_i) <\log(1-p_j)$. Therefore, minimizing the $\log(p_i)$ sum will maximize the probability of success and minimize the probability of failure.
+	 
+	\item[-] Since $\log(1-p_i)$ is a negative number, to find the path with the maximum probability of success between any two nodes in the network, a weight of $w'= -\log(1-p_i)$ is assigned to the edges in the graph.Then, running Floyd Warshall's algorithm on the graph with the modified edge weights will return the paths with the highest probability of success in $O(n^3)$ time.
+\end{itemize}
+\end{problemparts}
+
+\problem 
+\begin{itemize}
+	\item[-] Traverse the graph level by level, visiting each node only once. After all the salaries of the the current node's neighbors are known, update the current node's salary to the max(s+w for all its neighbors, current salary).
+	\item[-] After every node has been visited, add all the current salaries of the nodes to a counter, initialized to 0, that keeps track of every employees salary per month.
+	\item[-] Do this twelve times for every month, and return the final value of the counter to find the total salary paid to employees after a year in $ O(m+n) $ time. 
+\end{itemize}
+
+\section*{Part B}
+
+\problem
+Submit your implementation on \url{alg.csail.mit.edu}.
+
+\end{problems}
+
+\end{document}
+

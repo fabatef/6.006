@@ -1,0 +1,229 @@
+%
+% 6.006 problem set 1 solutions template
+%
+\documentclass[12pt,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\input{macros}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\theproblemsetnum}{3}
+\newcommand{\releasedate}{March 16, 2017}
+\newcommand{\duedate}{April 6, 2017}
+\newcommand{\tabUnit}{3ex}
+\newcommand{\tabT}{\hspace*{\tabUnit}}
+
+\title{6.006 Problem Set 3}
+
+\begin{document}
+
+\handout{Problem Set \theproblemsetnum}{March 16, 2017}
+
+\textbf{All parts are due {\bf \duedate} at {\bf 11:59PM}}.
+
+\setlength{\parindent}{0pt}
+
+\medskip
+
+\hrulefill
+
+\medskip
+
+{\bf Name:} Faaya Abate Fulas
+
+\medskip
+
+{\bf Collaborators:} Ebenezer Nkwate, Yingni Hatty Wang
+
+\medskip
+
+\hrulefill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% See below for common and useful latex constructs. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some useful commands:
+%$f(x) = \Theta(x)$
+%$T(x, y) \leq \log(x) + 2^y + \binom{2n}{n}$
+% {\tt code\_function}
+
+
+% You can create unnumbered lists as follows:
+%\begin{itemize}
+%    \item First item in a list 
+%        \begin{itemize}
+%            \item First item in a list 
+%                \begin{itemize}
+%                    \item First item in a list 
+%                    \item Second item in a list 
+%                \end{itemize}
+%            \item Second item in a list 
+%        \end{itemize}
+%    \item Second item in a list 
+%\end{itemize}
+
+% You can create numbered lists as follows:
+%\begin{enumerate}
+%    \item First item in a list 
+%    \item Second item in a list 
+%    \item Third item in a list
+%\end{enumerate}
+
+% You can write aligned equations as follows:
+%\begin{align} 
+%    \begin{split}
+%        (x+y)^3 &= (x+y)^2(x+y) \\
+%                &= (x^2+2xy+y^2)(x+y) \\
+%                &= (x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3) \\
+%                &= x^3+3x^2y+3xy^2+y^3
+%    \end{split}                                 
+%\end{align}
+
+% You can create grids/matrices as follows:
+%\begin{align}
+%    A = 
+%    \begin{bmatrix}
+%        A_{11} & A_{21} \\
+%        A_{21} & A_{22}
+%    \end{bmatrix}
+%\end{align}
+
+\begin{problems}
+
+\section*{Part A}
+
+\problem  % Problem 1
+Submit this to gradescope.
+
+\begin{problemparts}
+\problempart
+\begin{itemize}
+	\item Modify BFS such that unvisited nodes make it into the queue iff their color is different from their parent node's color. This guarantees that when we trace back using parent pointers from $ t $ to $ s $ to find the shortest path, no two consecutive nodes will have the same color.
+	\item Since this solution is still using the original BFS algorithm, the running time is $ O(V+E) $ 
+\end{itemize}
+\problempart
+\begin{itemize}
+	\item Modify BFS such that each node that is visited is augmented with the color of the edge traversed to get to it. A node, $ x $, on $ level_{i} $ is assigned as a parent of a node, $ y $, at $ level_{i+1} $ iff the edge color of x is different from edge color of y. This guarantees that the modified BFS returns the shortest path where no two consecutive edges have the same color. 
+	\item Since, in the worst case, a single node will be visited k times, the running time of the modified BFS is  $ O(k(V+E)) $
+\end{itemize}
+\end{problemparts}
+
+\problem  Submit this to gradescope.% Problem 2
+\begin{problemparts}
+\problempart 
+\begin{itemize}
+	\item Run DFS such that every node in the graph is covered. Since DFS goes depth-first, it will cover all the connected nodes starting from the source node used. 
+	\item During each run of DFS, keep track of the visited nodes from that run in a list.
+	\item Sort the lists returned from running DFS by size. This can be done in linear time ($ O(V) $) using counting sort
+	\item For $ k=1 $, constructing an edge between a node in the list with the largest size and a node in the list with the second largest size will form a sub-graph with the largest number of connected nodes in the entire graph.
+\end{itemize}
+\problempart 
+\begin{itemize}
+	\item For $ k=2 $ edges, if an edge is drawn between a node in the list with the largest size and a node in the list with the second largest size, then a second edge is drawn between a node in the list with the second largest size and a node in the list with the third largest size, then the resulting sub-graph will contain the largest number of connected nodes in the entire graph. 
+	\item For any $ 0 < k \leq V $ edges, if an edge is drawn such that it forms a connection between nodes from the $k+1$ lists (sorted in descending order by size), it will result in a sub-graph containing the maximum number of connected nodes in the entire graph. 
+\end{itemize}
+\end{problemparts}
+
+\problem  Submit this to gradescope. % Problem 3
+
+\begin{problemparts}
+\begin{itemize}
+	\item Run DFS on the graph and remove the back-edge, $E(u,x) $ with weight $w$. Since the graph has only one cycle, it has one more edge than a tree would. Therefore, $E=V$ and DFS will take $O(V)$ time. The resulting graph is a tree, so $ E = V-1 $ and there is exactly one path from $s$ to $t$. 
+	\item Run BFS on the tree to find the path from $s$ to $t$ in $O(V+(V-1)) = O(V)$ time and record the total cost of the path.
+	\item Run BFS again on the tree to find the path from $s$ to $u$ and another BFS to find the path from $x$ to $t$ in $O(V)$ time. The total cost of the path from $s$ to $t$ via the back-edge, $E(u,x)$: $Cost(s,u) + Cost(x,t) + w$
+	\item Compare the cost of the two paths, and choose the path with the lowest cost to find the shortest path between $s$ and $t$. 
+	
+\end{itemize}
+\end{problemparts}
+\clearpage
+
+\problem Submit this to gradescope. % Problem 4
+
+\begin{problemparts}
+\problempart A python dictionary entry has a hash value, a key pointer and a value pointer. In a 32 bit system, 4 bytes per pointer and 4 bytes for py$ \_ $hash$\_$t  results in 12 bytes for a single python dictionary entry.The \href{https://docs.python.org/3/whatsnew/3.2.html}{python documentation} states that "Hash values are now values of a new type, py$ \_ $hash$\_$t , which is defined to be the same size as a pointer.", so I used 4 bytes instead of 8  
+\problempart For sufficiently large number of insertions (to reduce the effect of the memory overhead) without deletions, a python dictionary doubles in size each time the load factor is reached.
+\problempart The load factor is $\approx 2/3$ 
+\problempart Yes. Since the table doubles when the load factor is reached, a new table of size $2m$ and a new hash function $h^{'}(k)$ has to be made, and every key in the previous table has to be rehashed into the new table before the key is inserted.
+
+\problempart As the value of n increases, the insertion time decreases. This happens because python uses open addressing and the rehashing frequency to handle collisions is lower for a larger n since the probability of collisions($ \frac{1}{n} $) decreases as n increases. 
+\problempart \begin{itemize}
+	\item Since the hash function is not deterministic, it's not possible to find an object after insertion.
+	\item Only integers can be hashed by the hash function. So, any other object would result in an error during insertion. 
+\end{itemize}
+\problempart 
+\begin{itemize}
+	\item Data Structure: A dictionary of all the nodes in the graph, with a set of all the node's neighbors as a value. 
+	\item To detect whether there is an edge between two nodes $ s $ and $ t $, find s in the dictionary in $ O(1) $ time and find t in the set of $ s $'s neighbors in $ O(1) $ time.
+	\item To find all of the neighbors of a node, find the node in the dictionary in $ O(1) $ time. Its value pair is a set containing all of its neighbors.
+\end{itemize}
+\problempart Tuples are hashable in python but arrays are not. This is because arrays are mutable, so if a change is made to the array once it has been inserted in a hash table, it can not be found. 
+\problempart As d increases, it gets exponentially harder to find collisions. In a 32-bit system, for d$\geq$ 25, it takes longer to find a collision. The maximum time for finding collisions usually occurs at d=38, where the code is finding the collision when all the 32 bits of the hash values of the two strings match. 
+\problempart From reading the source files provided in the pset:
+\begin{itemize}
+	\item Every built-in python object has its own hash function defined within its source file.
+	\item The default hash function for user-created objects is defined in \href{https://github.com/python/cpython/blob/master/Python/pyhash.c}{pyhash.c} and it maintains the invariant that if x = y, then hash(x)= hash(y) 
+\end{itemize} 
+\end{problemparts}
+
+
+\begin{figure}[h]
+	\centering 
+	\includegraphics[width=\linewidth]{fig1.png}
+	\caption{Python code used used to answer parts b-d}
+	\label{fig:stuf}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+	\centering 
+	\includegraphics[width=\linewidth]{fig3.png}
+	\caption{Python code used to answer part e}
+	\label{fig:stuf}
+\end{figure}
+\clearpage
+
+\begin{figure}[h]
+	\centering 
+	\includegraphics[width=\linewidth]{figure2.png}
+	\caption{Graph to support answer for part e}
+	\label{fig:stuf}
+\end{figure}
+
+\begin{figure}
+	\centering 
+	\includegraphics[width=\linewidth]{fig4.png}
+	\caption{Code to support answer for part f}
+	\label{fig:stuf}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h]
+	\centering 
+	\includegraphics[width=\linewidth]{icode.png}
+	\caption{Code used to answer part i}
+	\label{fig:stuf}
+\end{figure}
+
+\begin{figure}
+	\centering 
+	\includegraphics[width=\linewidth]{i.png}
+	\caption{Graph to support answer for part i}
+	\label{fig:stuf}
+\end{figure}
+
+\end{problems}
+
+\end{document}
+

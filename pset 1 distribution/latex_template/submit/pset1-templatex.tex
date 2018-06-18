@@ -1,0 +1,241 @@
+%
+% 6.006 problem set 1 solutions template
+%
+\documentclass[12pt,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+
+\input{macros}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\theproblemsetnum}{1}
+\newcommand{\releasedate}{Tuesday, February 14}
+\newcommand{\partaduedate}{Tuesday, February 28}
+\newcommand{\tabUnit}{3ex}
+\newcommand{\tabT}{\hspace*{\tabUnit}}
+
+\title{6.006 Problem Set 1}
+
+\begin{document}
+
+\handout{Problem Set \theproblemsetnum}{February 14, 2017}
+
+\textbf{All parts are due {\bf \partaduedate} at {\bf 11:59PM}}.
+
+\setlength{\parindent}{0pt}
+
+\medskip
+
+\hrulefill
+
+\medskip
+
+{\bf Name:} Faaya Abate Fulas
+
+\medskip
+
+{\bf Collaborators:} Marwa Abdulhai 
+
+\medskip
+
+\hrulefill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% See below for common and useful latex constructs. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some useful commands:
+%$f(x) = \Theta(x)$
+%$T(x, y) \leq \log(x) + 2^y + \binom{2n}{n}$
+% {\tt code\_function}
+
+
+% You can create unnumbered lists as follows:
+%\begin{itemize}
+%    \item First item in a list 
+%        \begin{itemize}
+%            \item First item in a list 
+%                \begin{itemize}
+%                    \item First item in a list 
+%                    \item Second item in a list 
+%                \end{itemize}
+%            \item Second item in a list 
+%        \end{itemize}
+%    \item Second item in a list 
+%\end{itemize}
+
+% You can create numbered lists as follows:
+%\begin{enumerate}
+%    \item First item in a list 
+%    \item Second item in a list 
+%    \item Third item in a list
+%\end{enumerate}
+
+% You can write aligned equations as follows:
+%\begin{align} 
+%    \begin{split}
+%        (x+y)^3 &= (x+y)^2(x+y) \\
+%                &= (x^2+2xy+y^2)(x+y) \\
+%                &= (x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3) \\
+%                &= x^3+3x^2y+3xy^2+y^3
+%    \end{split}                                 
+%\end{align}
+
+% You can create grids/matrices as follows:
+%\begin{align}
+%    A = 
+%    \begin{bmatrix}
+%        A_{11} & A_{21} \\
+%        A_{21} & A_{22}
+%    \end{bmatrix}
+%\end{align}
+
+\begin{problems}
+
+\section*{Part A}
+
+\problem  % Problem 1
+
+
+\begin{problemparts}
+\problempart \textbf{Group 1:} \\
+\\
+$ f_{1}(n) = O(n)$\\
+$ f_{2}(n) = O(\log(\log n))$\\
+$ f_{3}(n) = O(n\log ))$\\
+$ f_{4}(n) = O(\log n)$\\
+$ f_{5}(n) = n\log \sqrt{n} = 0.5n\log n = O(n\log n)$\\
+
+Since $f_{2}(n)$ reduces the size of the problem by its square root, its order of growth is slower than $f_{4}(n)$  which reduces it by half each time. Therefore, the arrangement of the functions in increasing order of growth is $f_{2}, f_{4}, f_{1}, (f_{3} = f_{5})$ \\
+
+
+
+\problempart \textbf{Group2:}\\
+\\
+$ f_{1} = O(n^{6.006}\log n) $ \\ 
+$ f_{2} = n^{2}\log n^{6.006} = 6.006n^{2}\log n =O(n\log n) = O(n^{2}\log n) $\\
+$ f_{3} = O(n^{3}) $\\
+$ f_{4} = O(n^{2}\log n) $\\
+$ f_{5} = O(n^{3}\log n) $\\ 
+
+
+Arrangement: $ (f_{2} = f_{4}), f_{3}, f_{5}, f_{1}$\\
+
+
+
+
+\end{problemparts}
+
+\problem  I used the Master Theorem method to solve all the recurrences below.% Problem 2
+
+\begin{problemparts}
+
+\problempart $ T(n) = \theta(n)$ since $ n^{\log_{b}a} = \theta(n) > f(n) = \theta(1)  $
+\problempart  $ T(n) = \theta(n\lg n )$ since $n^{\log_{b}a} = \theta(n) =  f(n) = \theta(n)$ and $ k=0 $
+\problempart $ T(n) = \theta(n^{\lg 3 })$ since $n^{\log_{b}a} = \theta(n^{\lg3}) > f(n) = \theta(n)$
+\problempart $ T(n) = \theta(\log n)$ since $n^{\log_{b}a} = \theta(1) < f(n) = \theta(\log n) $
+\problempart $ T(n) = \theta(n^{2})$ since $n^{\log_{b}a} = \theta(n) <  f(n) = \theta(n^{2}) $
+\problempart $ T(n) = \theta(n^{\lg 7)})$ since $n^{\log_{b}a} = \theta(n^{\lg7}) > f(n) = \theta(n^{2}) $
+\end{problemparts}
+
+\problem  % Problem 3
+
+\begin{itemize}
+	\item[1. ] Start with $ n= 0 $. Check if $ f(0)\geq 0 $. If so, done. Else, try $n+=1 $.
+	\item[2. ]  Check if $ f(1)\geq 0 $. If so, done. Else, try $ n+=1 $.
+	\item[3.  ]  Check if $ f(2) \geq $ 0. If so, done. Else, try $n*=2$.
+	\item[4. ]  Do step 3 until an $ n $ is found such that $ f(n) \geq 0 $ holds. Then, set $ n $ as an upper bound  and $ \dfrac{n}{2} $ as a lower bound and perform binary search in that interval.
+
+\end{itemize}
+
+	The recurrence for this algorithm would be:\\
+
+ $ T(n) = T(2n) + \O (\log n)$ \\
+ 
+ And, since $n^{\log_{0.5}1} = \theta(1) <  f(n) = \theta(\log n) $, the runtime complexity of the algorithm is  $ \theta(\log n) $. $ n $ can be written as some multiple of $ k $ where $ k \leq n \leq 2k$ holds, so the runtime complexity can also be expressed as $ \theta(\log k) $ 
+ 
+
+% \begin{problemparts}
+% \problempart Part a % Problem 3a
+% \problempart Part b % Problem 3b
+% \end{problemparts}
+
+\problem  % Problem 4
+
+\textbf{Data Structure:} 
+\begin{itemize}
+	\item A global  max-heap  of all packages with $ x.priority $ as key
+	\item A dictionary(hash table) with $ x.zip$ as key and a local max-heap as value. $ x.priority $ will be the key of the local heaps as well.
+	\item Pointers mapping the location of each package in the global heap to its location in the local heap containing it inside the dictionary.
+\end{itemize}
+
+Let $ size(D) $ be the size of the global max-heap and $ size(M) $ be the size of some local max-heap in the dictionary. So, $ size(D)  \geq size(M) $ \\
+
+\textbf{Operations}
+
+INIT(Z):
+
+\begin{itemize}
+	\item[- ] Initialize an array for the global max-heap and a dictionary for the local max-heaps
+\end{itemize}
+
+INSERT(D,x): 
+\begin{itemize}
+	\item[- ] Invoke the heap operation $ insert(D,x) $ on the global heap. This executes in $O(\log size(D))$ time.
+	
+	\item[- ] Find $ x.zip  $ in the dictionary of local max-heaps. 
+	
+	\item[- ] If $ x.zip$ is in the dictionary, invoke $ insert(M,x) $ on the local max heap whose key matches $ x.zip $. This executes in $ O(\log size(M)) $ time. If not, initialize a local max-heap with x as its first element and $ x.zip $ as its key in $ O(1) $ time. 
+	
+	\item[- ] Overall this would take $O(\log size(D))$ time since that is what dominates all other running times in INSERT(D,x).
+\end{itemize}
+
+MOST-URGENT(D): 
+
+
+\begin{itemize}
+	\item[- ] Since the package is a global max, find $ D[0].zip $ in the dictionary and invoke the heap operation $ extract-max(M)  $on the local max-heap paired to it.This executes in $O(\log size(M)) $ time.
+	
+	\item[- ] Invoke the heap operation $ extract-max(D) $ on the global heap. This executes in $O(\log size(D))$ time.
+	
+	\item[- ] Overall this would take $O(\log size(D))$ time since that is the costliest running time in MOST-URGENT(D).
+\end{itemize}
+
+REGIONAL-MOST-URGENT(D,r): 
+\begin{itemize}
+	\item[- ] Find $ r $ in the dictionary and locate the maximum priority package M[0] in the global heap using its pointer. This executes in O(1) time because of the use of pointers.
+
+	\item[- ] Invoke the heap operation $ increase-key(D,x,D[0]+1) $ to bubble M[0] up to the top of the heap. This executes in $O(\log size(D))$ time.
+	 
+	\item[- ] Invoke the heap operation $ extract-max(D) $ to remove it from the heap. This also takes $O(\log size(D))$ time   
+	
+	\item[- ] Invoke the heap operation $ extract-max(M) $ on the local heap. This executes in $O(\log size(M))$ time.
+	
+	\item[- ] Overall this would take $O(\log size(D))$ time since that is the costliest running time in REGIONAL-MOST-URGENT(D,r).
+	
+	
+\end{itemize}
+
+
+
+\section*{Part B}
+
+\problem
+\begin{problemparts}
+\problempart \emph{Submit your implementation on alg.csail.mit.edu}
+% \problempart \emph{Submit your implementation on alg.csail.mit.edu}
+% \problempart \emph{Submit your implementation on alg.csail.mit.edu}
+% \problempart Part d % Problem 4d
+% \problempart Part e % Problem 4e
+\end{problemparts}
+
+\end{problems}
+
+\end{document}
+

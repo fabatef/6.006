@@ -1,0 +1,210 @@
+%
+% 6.006 problem set 1 solutions template
+%
+\documentclass[12pt,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+
+\input{macros}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\theproblemsetnum}{5}
+\newcommand{\releasedate}{April 25, 2017}
+\newcommand{\duedate}{May 9, 2017}
+\newcommand{\tabUnit}{3ex}
+\newcommand{\tabT}{\hspace*{\tabUnit}}
+
+\title{6.006 Problem Set 5}
+
+\begin{document}
+
+\handout{Problem Set \theproblemsetnum}{\releasedate} 
+
+\textbf{All parts are due {\bf \duedate} at {\bf 11:59PM}}.
+
+\setlength{\parindent}{0pt}
+
+\medskip
+
+\hrulefill
+
+\medskip
+
+{\bf Name:} Faaya Abate Fulas
+
+\medskip
+
+{\bf Collaborators:} Ebenezer Nkwate  
+
+\medskip
+
+\hrulefill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% See below for common and useful latex constructs. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some useful commands:
+%$f(x) = \Theta(x)$
+%$T(x, y) \leq \log(x) + 2^y + \binom{2n}{n}$
+% {\tt code\_function}
+
+
+% You can create unnumbered lists as follows:
+%\begin{itemize}
+%    \item First item in a list 
+%        \begin{itemize}
+%            \item First item in a list 
+%                \begin{itemize}
+%                    \item First item in a list 
+%                    \item Second item in a list 
+%                \end{itemize}
+%            \item Second item in a list 
+%        \end{itemize}
+%    \item Second item in a list 
+%\end{itemize}
+
+% You can create numbered lists as follows:
+%\begin{enumerate}
+%    \item First item in a list 
+%    \item Second item in a list 
+%    \item Third item in a list
+%\end{enumerate}
+
+% You can write aligned equations as follows:
+%\begin{align} 
+%    \begin{split}
+%        (x+y)^3 &= (x+y)^2(x+y) \\
+%                &= (x^2+2xy+y^2)(x+y) \\
+%                &= (x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3) \\
+%                &= x^3+3x^2y+3xy^2+y^3
+%    \end{split}                                 
+%\end{align}
+
+% You can create grids/matrices as follows:
+%\begin{align}
+%    A = 
+%    \begin{bmatrix}
+%        A_{11} & A_{21} \\
+%        A_{21} & A_{22}
+%    \end{bmatrix}
+%\end{align}
+
+\begin{problems}
+
+\section*{Part A}
+
+\problem  % Problem 1
+This is a variation of the Longest Common Subsequence problem since the longest subsequence of matching colors will be a set containing the most number of points that can be connected without intersecting. Therefore: 
+\begin{itemize}
+	\item[-] Use an alphabet with \textit{k} different characters, label each color, and put the colored points on the y-axis in increasing order of appearance into a string A, and the points on the x-axis in increasing order of appearance into a string B. 	
+	\item[-] Then, use LCS logic covered in lecture to solve the problem in $O(k^2)$. 
+\end{itemize}
+
+\problem 
+\begin{problemparts}
+\problempart Each turn, Ben compares the first and the last digits and picks the minimum. For a number with n-digits, this algorithm runs in $O(n)$ time. This greedy strategy is not always optimal since picking the larger number on one turn might have a better pay off on the next turn. 
+\begin{itemize}
+	\item[-] For example, if on Ben's turn the number is 6158 , Ben would pick 6, Alyssa would pick 1, then Ben would pick 5, and Alyssa would pick 8 and win with a minimum score of 9.
+\end{itemize}
+\problempart 
+Let DP(i,j) be the minimum score a player can have from the $i^{th}$ to the $j^{th}$ digit. Then:
+ \begin{itemize}
+ 	\item[-] $ DP(i,j) = $ $d$,  for $i=j $ and, 
+ 	\item [- ] $ DP(i,j)= Min $($d_{i}$ , $d_{j}$), for  $j=i+1 $
+ \end{itemize}
+
+Since the opponent also plays optimally, the best digit a player can pick on each turn is determined by the minimum of the two edge digits, and the maximum payoff of the remaining digits after his opponent picks on the next turn.  \\
+
+
+Then, \[ DP(i,j) = Min(d_i + Max(DP(i+1,j-1),DP(i, j-2)) \]
+
+\textbf{Number of Subproblems:} For every choice of i and j, since there are $n$ digits $\implies \Theta(n^2)$\\
+
+\textbf{Time/Subproblem:} $\Theta(1)$\\
+
+\textbf{Total Running Time:} $\Theta(n^2)$
+
+\end{problemparts}
+
+\problem   % Problem 3
+
+\begin{problemparts}
+\problempart Let $NW_{i,j}$ be the minimum value of any square in the northwest quadrant. 
+Then:
+\begin{itemize}
+	\item [-] $NW_{0,j}$ and $NW_{i,0} = \infty$,  $ \forall i, j$ (edge cells) and,  
+	\item [-] $NW_{1,1} = n_{0,0}$
+\end{itemize} 
+Then, 
+\[ NW_{i,j} = Min(NW_{i-1 , j}, NW_{i, j-1}, n_{i-1,j-1}) \]
+
+\textbf{Number of Subproblems:} For an n-row by m-column grid $\implies \Theta(nm)$\\
+
+\textbf{Time/Subproblem:} $\Theta(1)$\\
+
+\textbf{Total Running Time:} $\Theta(nm)$
+
+
+\problempart  Similarly, the edge cells for each of the following calculations have a value of $\infty$, and: \\
+
+$SW_{i,j} = Min(SW_{i+1 , j}, SW_{i, j-1}, n_{i+1, j-1})$, with base case $SW_{n-1,1}= n_{n,0}$\\
+
+$NE_{i,j} = Min(NE_{i-1 , j}, NE_{i, j+1}, n_{i-1, j+1})$, with base case $NE_{1,m-1}= n_{0,m}$\\
+
+$SE_{i,j} = Min(SE_{i+1 , j}, SE_{i, j+1}, n_{i+1, j+1})$, with base case $SE_{n-1,m-1}= n_{n,m}$\\
+
+
+
+\begin{itemize}
+	\item[-] $NE, SW, NW, SE$ values can be computed in $O(nm)$ time for all cells. 
+	\item[-] The products of these values for each cell can be computed in $O(1)$ time.
+	\item[-] And, the cell with the minimum product value can be found in $O(nm)$ time.
+\end{itemize}
+
+Therefore, this algorithm will find the optimal square in $O(nm)$ time.
+
+
+
+\end{problemparts}
+
+\problem 
+
+\begin{problemparts}
+\problempart Let $P(c,i,j)$ be the optimal number of steps needed to go from some character \textit{c} to a substring $S[i,j]$ of S. Then:
+\begin{itemize}
+	\item[-] $P(c,i,j) = 0$, for $i=j$ (Since no step is needed to convert c to itself)
+\end{itemize}
+
+To get the best value for $P$, the substring S[i,j] can be subdivided by some index $r$, so that for each stage, all the possible ways of getting to the target substring are explored. Then, the optimal $P$ is minimum of those $P$ values plus the current step.\\
+
+Therefore, 
+
+\[  P(c,i,j)= Min_{i<r<j}(P(c,i,r-1), P(c,r,j)) + 1 \] 
+
+\problempart 
+
+\textbf{Number of Subproblems:} For every choice of i and j, and for every possible values of $c$, the number of subproblems is $O(kn^2)$.\\
+
+\textbf{Time/Subproblem:} For each $c$, there are $m$ possible rules to be applied and there are $n$ possible ways to split the substring, $S[i,j]$.  Therefore, each subproblem can be solved in $O(nm)$ time.\\
+
+\textbf{Total Running Time:} $O(n^3mk)$
+
+
+\end{problemparts}
+
+\section*{Part B}
+
+\problem
+Submit your implementation on \url{alg.csail.mit.edu}.
+
+\end{problems}
+
+\end{document}
+

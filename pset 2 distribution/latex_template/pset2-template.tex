@@ -1,0 +1,271 @@
+%
+% 6.006 problem set 1 solutions template
+%
+\documentclass[12pt,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+
+\input{macros}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\theproblemsetnum}{2}
+\newcommand{\releasedate}{February 28, 2017}
+\newcommand{\duedate}{March 10, 2017}
+\newcommand{\tabUnit}{3ex}
+\newcommand{\tabT}{\hspace*{\tabUnit}}
+
+\title{6.006 Problem Set 2}
+
+\begin{document}
+
+\handout{Problem Set \theproblemsetnum}{February 28, 2017}
+
+\textbf{All parts are due {\bf \duedate} at {\bf 11:59PM}}.
+
+\setlength{\parindent}{0pt}
+
+\medskip
+
+\hrulefill
+
+\medskip
+
+{\bf Name:} Faaya Abate Fulas
+
+\medskip
+
+{\bf Collaborators:} Yingni Hatty Wang, Ebenezer Nkwate
+
+\medskip
+
+\hrulefill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% See below for common and useful latex constructs. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some useful commands:
+%$f(x) = \Theta(x)$
+%$T(x, y) \leq \log(x) + 2^y + \binom{2n}{n}$
+% {\tt code\_function}
+
+
+% You can create unnumbered lists as follows:
+%\begin{itemize}
+%    \item First item in a list 
+%        \begin{itemize}
+%            \item First item in a list 
+%                \begin{itemize}
+%                    \item First item in a list 
+%                    \item Second item in a list 
+%                \end{itemize}
+%            \item Second item in a list 
+%        \end{itemize}
+%    \item Second item in a list 
+%\end{itemize}
+
+% You can create numbered lists as follows:
+%\begin{enumerate}
+%    \item First item in a list 
+%    \item Second item in a list 
+%    \item Third item in a list
+%\end{enumerate}
+
+% You can write aligned equations as follows:
+%\begin{align} 
+%    \begin{split}
+%        (x+y)^3 &= (x+y)^2(x+y) \\
+%                &= (x^2+2xy+y^2)(x+y) \\
+%                &= (x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3) \\
+%                &= x^3+3x^2y+3xy^2+y^3
+%    \end{split}                                 
+%\end{align}
+
+% You can create grids/matrices as follows:
+%\begin{align}
+%    A = 
+%    \begin{bmatrix}
+%        A_{11} & A_{21} \\
+%        A_{21} & A_{22}
+%    \end{bmatrix}
+%\end{align}
+
+\begin{problems}
+
+\section*{Part A}
+
+\problem  % Problem 1
+Submit this to gradescope.
+
+\begin{problemparts}
+\problempart 
+\begin{itemize}
+	\item[- ] Call  \textit{in-order-traversal} while keeping track of the last visited node.
+	\item[- ] If the key of last visited node is greater than the key of the current node to be visited, the tree is not a BST. This is because in-order traversal returns a sorted array in ascending order.
+\end{itemize}
+
+This takes $O(n)$ time since \textit{in-order-traversal} takes $O(n)$.
+ 
+\problempart
+
+\begin{enumerate}
+	\item Initialize an empty list L and an empty BST
+	\item Call \textit{in-order-traversal} on the given BST while appending the visited nodes to L. L should now be a sorted array of the given BST's elements.  
+	\item Find the midpoint of L and insert the element at that index into the empty BST.
+	\item Using binary search, recursively do Step 3 for the left half and right half of L. 
+	\item The recursion stops when the lookup range = 0\\
+	
+\end{enumerate}
+
+The recurrence for this algorithm should be $ T(n) = 2T(n/2) + \theta (1)$ since it is reducing the size of the problem by half on each recursion and finding the element at the midpoint of the lookup range and inserting it in constant time. Solving the recurrence using the Master Theorem yields $n^{\log_{2}2}= \theta(n) >  f(n) = \theta(1) $. So, the runtime complexity of the algorithm is  $ \O(n) $.
+
+\end{problemparts}
+
+\problem
+
+Data Structure: Let D be an augmented AVL tree. Each node in the AVL tree has:
+
+\begin{itemize}
+	\item key = M
+	\item value = k
+	\item product = None
+\end{itemize} 
+
+\begin{enumerate}
+	\item UPDATE(M, k):
+	\begin{itemize}
+		\item Call a modified version of \textit{INSERT} on D which checks if \textit{k} matches the key of an existing node in the AVL tree. 
+		\item If it doesn't, insert the new node N such that:
+		\begin{itemize}
+			\item If (N.left and N.right are not None): \\
+			 \-\ N.Product = N.left.product * N.value * N.right.product
+			\item If (N.left and N.right are None): \\
+			 \-\ N.Product = M
+			\item If N.left is None and N.right is not:\\
+			N.Product = N.value * N.right.product
+			\item If N.right is None and N.left is not:\\
+			N.Product = N.left.product * N.value	
+		\end{itemize}
+	\item If it does, update the existing node E such that:
+	\begin{itemize}
+		\item  E.product = E.left.product * M * E.right.product (check existence of left and right children and follow the cases in the second bullet point)
+		\item current = E.parent
+		\item While current.parent is not None: \\
+		\-\ current.product = current.left.product * M * current.right.product (check existence of left and right children and follow the cases in the second bullet point)\\
+		\-\ current = current.parent
+	\end{itemize}
+	\item Since \textit{UPDATE(M,k)} is a modification of \textit{INSERT}( $\O(\log D)) $) where the added computation of calculating products takes constant time and, for the case where keys match, updating the product values takes $\O(h_D) = \O(\log D) $ time , \textit{UPDATE}'s running time is also $\O(\log D)) $. 
+	\end{itemize}
+	\item \textit{COMPUTE()}:
+	\begin{itemize}
+		\item Since the root of D contains all the products in the left subtree multiplied by its value multiplied by all the products in the right subtree:
+		\begin{itemize}
+			\item  return \textit{D.root.product} 
+		\end{itemize}
+		\item Therefore, COMPUTE() runs in $\O(1) $
+	\end{itemize}
+\end{enumerate}  
+
+
+\problem  Submit this to gradescope. % Problem 3
+
+\begin{problemparts}
+\problempart Part a % Problem 3a
+\begin{itemize}
+	\item Initialize empty arrays, X and Y
+	\item In $\O(2n)$ time, go through the array A and add all the values in A that fall in the range of $[0,b)$ to X and add all the values in A that are $ \geq b $ in Y.
+	\item X.size = n-k and Y.size = k
+	\item Sort X using radix sort in $\O((n-k)+b)$ time. Since $n>k$, this will take $\O(n+b)$ time. 
+	\item Sort Y using merge sort in $\O(k\log k)$ time.
+	\item Since the all the elements in Y are guaranteed to be larger than the elements in X, do X.extend(Y) in $\O(k)$ time. The resulting list should be the sorted array of A.
+	\item Overall, this takes $\O(n+(n+b)+(k\log k)+(k))$. This simplifies to $\O(n+b+k\log k)$ since $\O(2n) = \O(n)$ and $n>k$.
+\end{itemize}
+
+\end{problemparts}
+
+\problem Submit this to gradescope. % Problem 4
+
+\begin{problemparts}
+\problempart 
+
+Let D be made of an augumented AVL Tree(avl) and a min-heap(H) which store the items in the sorted array A. Each node in the AVL tree has: 
+\begin{itemize}
+	\item key = A[i]
+	\item count = 1
+\end{itemize} 
+Every time a new node is inserted in the AVL Tree, its count is also updated such that node.count = 1+ node.left + node.right, so that the count value in each node reflects the number of nodes beneath it, including itself.
+\begin{enumerate}
+	\item COUNT-LESS-THAN(x):\\
+	\textit{FIND(x)} is a function I implemented in part B that takes $ \O(\log n $) time to find the smallest node in an AVL tree that has a key greater than or equal to x. 
+	\begin{itemize}
+		\item node = avl.FIND(x)
+		\item counter = 0
+	\end{itemize}
+Since all the elements on the left subtree of node are guaranteed to be less than its key:
+\begin{itemize}
+		\item if (node.left is not None):\\
+		 \-\ counter += node.left.count
+	\end{itemize}	
+Next, if node is its parent right child, then all the elements in its parents left subtree are less than its key. This holds for all the nodes above 'node' until the root is reached. So:	
+    \begin{itemize}
+    			\item current = node
+       \item While current.parent is not None:
+		\begin{itemize}
+			\item if current.parent.right is current:\\
+			\-\ counter += (1+current.parent.left.count) 	
+		\end{itemize}
+	    \item current=current.parent
+	\end{itemize}
+When the while loop is done, the root has been reached, so: 
+\begin{itemize} 
+	    \item return counter
+    \end{itemize}
+
+Since the While loop in COUNT-LESS-THAN(x) walks up the height of the tree, the algorithm runs in $\O(h_{avl})= \O(\log n)$ time.\\
+\clearpage
+\item COUNT-GREATER-THAN(x):
+\begin{itemize}
+	\item Since the number of elements in A is stored in avl.root.count:\\
+	COUNT-GREATER-THAN(x)= avl.root.count - COUNT-LESS-THAN(x)
+	\item Therefore, the algorithm runs in $\O(\log n)$ time
+\end{itemize}
+
+\end{enumerate}
+\problempart 
+\begin{enumerate}
+	\item INSERT(D,x):
+	\begin{itemize}
+		\item Call Insert(x) on min-heap H. Running time: $ \O(log n) $
+		\item Call Insert(x) on AVL Tree where:
+		\begin{itemize}
+			\item  nodeX.count = nodeX.left.count + nodeX.right + 1 (check existence of left and right children and adjust sum accordingly)
+			\item current = nodeX.parent
+			\item While current.parent is not None: \\
+			\-\ current.count = current.left.count + current.right.count + 1 (check existence of left and right children and adjust sum accordingly)\\
+			\-\ current = current.parent
+		\end{itemize}
+		\item The algorithm will take $\O(\log n) $ since the While loop walks up the height of the tree.
+	\end{itemize}
+\item COUNT-OUTLIERS(D,z):
+\begin{itemize}
+	\item Since the min-heap is stored as a sorted array, indexing into locations should take constant time. So, we can find Q1 and Q3 and calculate the upper bound (UB) and lower bounds(LB) for determining outliers in constant time. 
+	\item return COUNT-LESS-THAN(LB) + COUNT-GREATER-THAN(UB)
+\end{itemize}
+\end{enumerate}
+\end{problemparts}
+
+\section*{Part B}
+
+\problem
+Submit your implementation on \url{alg.csail.mit.edu}.
+
+\end{problems}
+
+\end{document}
+
